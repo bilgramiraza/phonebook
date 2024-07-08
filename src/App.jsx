@@ -7,12 +7,18 @@ function checkDuplicates(phoneBook, name) {
 
 function App() {
   const [people, setPeople] = useState([
-    { name: 'Aaron Smith' },
+    {
+      name: 'Aaron Smith',
+      number: '12-345-6789',
+    },
   ]);
 
   const [newName, setNewName] = useState('');
+  const [newNumber, setNewNumber] = useState('');
 
   const handleNewNameChange = (e) => setNewName(e.target.value);
+
+  const handleNewNumberChange = (e) => setNewNumber(e.target.value);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -20,8 +26,9 @@ function App() {
       alert(`${newName} Already Exists`);
       return;
     }
-    setPeople([...people, { name: newName }]);
+    setPeople([...people, { name: newName, number: newNumber }]);
     setNewName('');
+    setNewNumber('');
   }
   return <div>
     <h2>Phone Book</h2>
@@ -29,11 +36,14 @@ function App() {
       <label>
         Name : <input type="text" id="name" value={newName} onChange={handleNewNameChange} />
       </label>
+      <label>
+        Number : <input type="tel" id="number" value={newNumber} onChange={handleNewNumberChange} />
+      </label>
       <button type="submit">Add</button>
     </form>
     <h2>Numbers</h2>
     <ol>
-      {people.map(person => <li key={person.name}>{person.name}</li>)}
+      {people.map(person => <li key={person.name}>{person.name} : {person.number}</li>)}
     </ol>
   </div>;
 }
