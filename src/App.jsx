@@ -1,5 +1,10 @@
 import { useState } from "react";
 
+function checkDuplicates(phoneBook, name) {
+  const getAllNames = phoneBook.map(person => person.name);
+  return !getAllNames.includes(name);
+}
+
 function App() {
   const [people, setPeople] = useState([
     { name: 'Aaron Smith' },
@@ -11,6 +16,10 @@ function App() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (!checkDuplicates(people, newName)) {
+      alert(`${newName} Already Exists`);
+      return;
+    }
     setPeople([...people, { name: newName }]);
     setNewName('');
   }
