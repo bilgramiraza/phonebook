@@ -39,7 +39,7 @@ function App() {
       <label>
         Number : <input type="tel" id="number" value={newNumber} onChange={handleNewNumberChange} />
       </label>
-      <button type="submit">Add</button>
+      <button type="submit" disabled={!(newNumber && newName)}>Add</button>
     </form>
     <h2>Numbers</h2>
     <ol>
