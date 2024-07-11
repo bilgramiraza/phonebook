@@ -26,7 +26,14 @@ function App() {
       alert(`${newName} Already Exists`);
       return false;
     }
-    setPeople([...people, { name: newName, number: newNumber, id: people.length + 1 }]);
+    const newPerson = {
+      name: newName,
+      number: newNumber,
+    };
+    axios
+      .post('http://localhost:3001/persons', newPerson)
+      .then(response => response.data);
+    setPeople([...people, newPerson]);
     return true;
   };
 
