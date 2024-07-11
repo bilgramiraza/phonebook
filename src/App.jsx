@@ -2,16 +2,16 @@ import { useEffect, useState } from "react";
 import PhoneBookForm from "./components/PhoneBookForm";
 import FilterForm from "./components/FilterForm";
 import DisplayPhoneBook from "./components/DisplayPhoneBook";
-import axios from "axios";
+import phoneBook from "./services/phoneBook";
 
 function App() {
   const [people, setPeople] = useState([]);
 
   useEffect(() => {
-    axios
-      .get('http://localhost:3001/persons')
-      .then(response => {
-        setPeople(response.data);
+    phoneBook
+      .getAll()
+      .then(peopleList => {
+        setPeople(peopleList);
       })
   }, []);
 
@@ -26,14 +26,10 @@ function App() {
       alert(`${newName} Already Exists`);
       return false;
     }
-    const newPerson = {
-      name: newName,
-      number: newNumber,
-    };
-    axios
-      .post('http://localhost:3001/persons', newPerson)
-      .then(response => response.data);
-    setPeople([...people, newPerson]);
+    phoneBook
+      .create({ name: newName, number: newNumber })
+      .then(newPerson => setPeople([...people, newPerson]));
+
     return true;
   };
 
