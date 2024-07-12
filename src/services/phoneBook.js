@@ -17,8 +17,14 @@ const remove = personId => {
 	return request;
 };
 
+const replaceNumber = (personId, alteredPerson) => {
+	const request = axios.put(`${baseUrl}/${personId}`, alteredPerson);
+	return request.then(response => response.data);
+};
+
 export default {
 	getAll,
 	create,
 	remove,
+	replaceNumber,
 };

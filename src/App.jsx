@@ -23,16 +23,23 @@ function App() {
   });
 
   const handleNewPerson = (newName, newNumber) => {
-    const getAllNames = people.map(person => person.name);
-    if (getAllNames.includes(newName)) {
+    const findPerson = people.find(person => person.name === newName);
+    if (findPerson && findPerson.number === newNumber) {
       alert(`${newName} Already Exists`);
       return false;
+    } else if (findPerson) {
+      const confirm = window.confirm(`${findPerson.name} Exists with a Different Number. Do you want to replace its phone number?`);
+      if (!confirm) return false;
+      phoneBook
+        .replaceNumber(findPerson.id, { ...findPerson, number: newNumber })
+        .then(newPerson => setPeople(people.map(person => person.id === newPerson.id ? newPerson : person)));
+      return true;
+    } else {
+      phoneBook
+        .create({ name: newName, number: newNumber })
+        .then(newPerson => setPeople([...people, newPerson]));
+      return true;
     }
-    phoneBook
-      .create({ name: newName, number: newNumber })
-      .then(newPerson => setPeople([...people, newPerson]));
-
-    return true;
   };
 
   const handleFilter = (newNameFilter, newNumberFilter) => {
