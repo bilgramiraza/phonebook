@@ -6,7 +6,6 @@ import phoneBook from "./services/phoneBook";
 
 function App() {
   const [people, setPeople] = useState([]);
-  const [refresh, setRefresh] = useState(false);
 
   useEffect(() => {
     phoneBook
@@ -14,8 +13,7 @@ function App() {
       .then(peopleList => {
         setPeople(peopleList);
       })
-    setRefresh(false);
-  }, [refresh]);
+  }, []);
 
   const [filter, setFilter] = useState({
     name: '',
@@ -53,7 +51,7 @@ function App() {
     <h2>Phone Book</h2>
     <PhoneBookForm submitNewPerson={handleNewPerson} />
     <FilterForm changeFilter={handleFilter} />
-    <DisplayPhoneBook phoneBook={people} filter={filter} handleRefresh={setRefresh} />
+    <DisplayPhoneBook phoneBook={people} filter={filter} setPhoneBook={setPeople} />
   </div>;
 }
 
