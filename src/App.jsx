@@ -3,9 +3,14 @@ import PhoneBookForm from "./components/PhoneBookForm";
 import FilterForm from "./components/FilterForm";
 import DisplayPhoneBook from "./components/DisplayPhoneBook";
 import phoneBook from "./services/phoneBook";
+import Notification from "./components/Notification";
 
 function App() {
   const [people, setPeople] = useState([]);
+  const [notification, setNotification] = useState({
+    message: 'Success',
+    status: true,
+  });
 
   useEffect(() => {
     phoneBook
@@ -48,6 +53,7 @@ function App() {
   };
 
   return <div>
+    <Notification message={notification.message} status={notification.status} />
     <h2>Phone Book</h2>
     <PhoneBookForm submitNewPerson={handleNewPerson} />
     <FilterForm changeFilter={handleFilter} />
