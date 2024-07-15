@@ -38,9 +38,9 @@ function App() {
         .replaceNumber(findPerson.id, { ...findPerson, number: newNumber })
         .then(newPerson => {
           setPeople(people.map(person => person.id === newPerson.id ? newPerson : person));
-          handleNotification(`${newPerson.name} Added to the Phonebook`, true);
+          handleNotification(`${newPerson.name}'s Number changed in the Phonebook`, true);
         })
-        .catch(() => handleNotification("Unable to Add Contact to the DB", false));
+        .catch(() => handleNotification(`Unable to change ${newName}'s Number in the DB`, false));
       return true;
     } else {
       phoneBook
@@ -49,7 +49,7 @@ function App() {
           setPeople([...people, newPerson]);
           handleNotification(`${newPerson.name} Added to the Phonebook`, true);
         })
-        .catch(() => handleNotification("Unable to Add Contact to the DB", false));
+        .catch(() => handleNotification(`Unable to Add ${newName} to the DB`, false));
       return true;
     }
   };
@@ -68,7 +68,10 @@ function App() {
         setPeople(people => people.filter(p => p.id !== deletedPerson.id));
         handleNotification(`${deletedPerson.name} Deleted`, true);
       })
-      .catch(() => handleNotification("Could not delete contact from the DB", false));
+      .catch(() => {
+        const deletedPerson = people.find(person => person.id === personId);
+        handleNotification(`Could not delete ${deletedPerson.name} from the DB`, false);
+      });
   };
 
   const handleNotification = (message, status) => {
