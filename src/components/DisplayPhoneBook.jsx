@@ -1,24 +1,19 @@
-import phoneBook from "../services/phoneBook";
 
-function PhoneBookItem({ person, setPhoneBook }) {
+function PhoneBookItem({ person, deletePerson }) {
 
-  const deletePerson = (personId, setPhoneBook) => {
+  const handleDeletion = (personId) => {
     const confirm = window.confirm(`Delete ${person.name}?`);
-    if (confirm) {
-      phoneBook
-        .remove(personId)
-        .then(deletedPerson => setPhoneBook(people => people.filter(p => p.id !== deletedPerson.id)));
-    }
+    if (confirm) deletePerson(personId);
   };
 
   return (
     <li>
-      {person.name} : {person.number} <button onClick={() => deletePerson(person.id, setPhoneBook)}>X</button>
+      {person.name} : {person.number} <button onClick={() => handleDeletion(person.id)}>X</button>
     </li>
   );
 }
 
-function DisplayPhoneBook({ phoneBook, filter, setPhoneBook }) {
+function DisplayPhoneBook({ phoneBook, filter, deletePerson }) {
 
   const filteredPhoneBook = phoneBook.filter(({ name: personName, number: personNumber }) => {
     const nameFilter = personName.toLowerCase().includes(filter.name.toLowerCase());
@@ -32,7 +27,7 @@ function DisplayPhoneBook({ phoneBook, filter, setPhoneBook }) {
       <h3>Contact List</h3>
       <ol>
         {
-          filteredPhoneBook.map(person => <PhoneBookItem key={person.id} person={person} setPhoneBook={setPhoneBook} />)
+          filteredPhoneBook.map(person => <PhoneBookItem key={person.id} person={person} deletePerson={deletePerson} />)
         }
       </ol>
     </div>

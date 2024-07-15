@@ -61,6 +61,16 @@ function App() {
     });
   };
 
+  const handleDeletion = (personId) => {
+    phoneBook
+      .remove(personId)
+      .then(deletedPerson => {
+        setPeople(people => people.filter(p => p.id !== deletedPerson.id));
+        handleNotification(`${deletedPerson.name} Deleted`, true);
+      })
+      .catch(() => handleNotification("Could not delete contact from the DB", false));
+  };
+
   const handleNotification = (message, status) => {
     setNotification({ message, status });
     setTimeout(() => setNotification(notif => ({ ...notif, message: '' })), 5000);
@@ -72,7 +82,7 @@ function App() {
       <h2>Phone Book</h2>
       <PhoneBookForm submitNewPerson={handleNewPerson} />
       <FilterForm changeFilter={handleFilter} />
-      <DisplayPhoneBook phoneBook={people} filter={filter} setPhoneBook={setPeople} />
+      <DisplayPhoneBook phoneBook={people} filter={filter} deletePerson={handleDeletion} />
     </div>
   );
 }
