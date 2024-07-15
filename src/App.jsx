@@ -8,8 +8,8 @@ import Notification from "./components/Notification";
 function App() {
   const [people, setPeople] = useState([]);
   const [notification, setNotification] = useState({
-    message: 'Success',
-    status: true,
+    message: '',
+    status: '',
   });
 
   useEffect(() => {
@@ -18,6 +18,7 @@ function App() {
       .then(peopleList => {
         setPeople(peopleList);
       })
+      .catch(() => handleNotification("Unable to get List of Contacts", false));
   }, []);
 
   const [filter, setFilter] = useState({
@@ -35,12 +36,20 @@ function App() {
       if (!confirm) return false;
       phoneBook
         .replaceNumber(findPerson.id, { ...findPerson, number: newNumber })
-        .then(newPerson => setPeople(people.map(person => person.id === newPerson.id ? newPerson : person)));
+        .then(newPerson => {
+          setPeople(people.map(person => person.id === newPerson.id ? newPerson : person));
+          handleNotification(`${newPerson.name} Added to the Phonebook`, true);
+        })
+        .catch(() => handleNotification("Unable to Add Contact to the DB", false));
       return true;
     } else {
       phoneBook
         .create({ name: newName, number: newNumber })
-        .then(newPerson => setPeople([...people, newPerson]));
+        .then(newPerson => {
+          setPeople([...people, newPerson]);
+          handleNotification(`${newPerson.name} Added to the Phonebook`, true);
+        })
+        .catch(() => handleNotification("Unable to Add Contact to the DB", false));
       return true;
     }
   };
@@ -52,13 +61,20 @@ function App() {
     });
   };
 
-  return <div>
-    <Notification message={notification.message} status={notification.status} />
-    <h2>Phone Book</h2>
-    <PhoneBookForm submitNewPerson={handleNewPerson} />
-    <FilterForm changeFilter={handleFilter} />
-    <DisplayPhoneBook phoneBook={people} filter={filter} setPhoneBook={setPeople} />
-  </div>;
+  const handleNotification = (message, status) => {
+    setNotification({ message, status });
+    setTimeout(() => setNotification(notif => ({ ...notif, message: '' })), 5000);
+  };
+
+  return (
+    <div>
+      <Notification message={notification.message} status={notification.status} />
+      <h2>Phone Book</h2>
+      <PhoneBookForm submitNewPerson={handleNewPerson} />
+      <FilterForm changeFilter={handleFilter} />
+      <DisplayPhoneBook phoneBook={people} filter={filter} setPhoneBook={setPeople} />
+    </div>
+  );
 }
 
 export default App;
