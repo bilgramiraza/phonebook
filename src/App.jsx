@@ -6,10 +6,10 @@ import phoneBook from "./services/phoneBook";
 import Notification from "./components/Notification";
 
 function App() {
-  const [people, setPeople] = useState([]);
+  const [people, setPeople] = useState(null);
   const [notification, setNotification] = useState({
-    message: '',
-    status: '',
+    message: null,
+    status: false,
   });
 
   useEffect(() => {
@@ -78,6 +78,9 @@ function App() {
     setNotification({ message, status });
     setTimeout(() => setNotification(notif => ({ ...notif, message: '' })), 5000);
   };
+
+  if (!people)
+    return null;
 
   return (
     <div>
