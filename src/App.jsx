@@ -64,8 +64,9 @@ function App() {
   const handleDeletion = (personId) => {
     phoneBook
       .remove(personId)
-      .then(deletedPerson => {
-        setPeople(people => people.filter(p => p.id !== deletedPerson.id));
+      .then(() => {
+        const deletedPerson = people.find(person => person.id === personId);
+        setPeople(people => people.filter(p => p.id !== personId));
         handleNotification(`${deletedPerson.name} Deleted`, true);
       })
       .catch(() => {
@@ -83,9 +84,9 @@ function App() {
     return null;
 
   return (
-    <div>
+    <div className="w-full ps-2 flex flex-col">
       <Notification message={notification.message} status={notification.status} />
-      <h2>Phone Book</h2>
+      <h2 className="w-1/2 my-3 text-2xl font-bold text-center underline">Phone Book</h2>
       <PhoneBookForm submitNewPerson={handleNewPerson} />
       <FilterForm changeFilter={handleFilter} />
       <DisplayPhoneBook phoneBook={people} filter={filter} deletePerson={handleDeletion} />
