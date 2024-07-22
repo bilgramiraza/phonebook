@@ -24,7 +24,7 @@ function FilterForm({ changeFilter }) {
   };
 
   return (
-    <div className="w-1/2 p-1 flex flex-col border-b-2 border-black ">
+    <div className="w-full p-1 flex flex-col border-b-2 border-black ">
       <h3 className="text-lg font-bold text-center">Filter Contacts</h3>
       <form onSubmit={handleSubmit} onReset={handleReset} className="my-2 w-full flex flex-col">
         <div className="w-full flex flex-row justify-around">
@@ -37,7 +37,7 @@ function FilterForm({ changeFilter }) {
             <input type="text" id="filterNumber" value={newFilterNumber} onChange={handleNewFilterNumberChange} className="basis-3/5 border border-black border-3 rounded" />
           </label>
         </div>
-        <div className="w-full mt-3 flex flex-row justify-around">
+        <div className="w-full mt-3 flex flex-row justify-center">
           <button type="submit" className="px-8 py-1 border border-3 border-black rounded bg-blue-500 text-white hover:cursor-pointer hover:bg-blue-700">Apply Filter</button>
           <button type="reset" className="px-8 py-1 border border-3 border-black rounded bg-gray-500 text-white hover:cursor-pointer hover:bg-gray-700">Clear Filter</button>
         </div>

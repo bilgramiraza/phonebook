@@ -29,7 +29,7 @@ function App() {
   const handleNewPerson = (newName, newNumber) => {
     const findPerson = people.find(person => person.name === newName);
     if (findPerson && findPerson.number === newNumber) {
-      alert(`${newName} Already Exists`);
+      handleNotification(`${newName} Already Exists`, false);
       return false;
     } else if (findPerson) {
       const confirm = window.confirm(`${findPerson.name} Exists with a Different Number. Do you want to replace its phone number?`);
@@ -80,13 +80,10 @@ function App() {
     setTimeout(() => setNotification(notif => ({ ...notif, message: '' })), 5000);
   };
 
-  if (!people)
-    return null;
-
   return (
-    <div className="w-full ps-2 flex flex-col">
+    <div className="w-full lg:w-1/2 lg:mx-auto ps-2 flex flex-col relative">
+      <h2 className="w-full my-3 text-2xl font-bold text-center underline">Phone Book</h2>
       <Notification message={notification.message} status={notification.status} />
-      <h2 className="w-1/2 my-3 text-2xl font-bold text-center underline">Phone Book</h2>
       <PhoneBookForm submitNewPerson={handleNewPerson} />
       <FilterForm changeFilter={handleFilter} />
       <DisplayPhoneBook phoneBook={people} filter={filter} deletePerson={handleDeletion} />
