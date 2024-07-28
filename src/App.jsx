@@ -40,7 +40,13 @@ function App() {
           setPeople(people.map(person => person.id === newPerson.id ? newPerson : person));
           handleNotification(`${newPerson.name}'s Number changed in the Phonebook`, true);
         })
-        .catch(() => handleNotification(`Unable to change ${newName}'s Number in the DB`, false));
+        .catch(error => {
+          let errMsg = `Unable to change ${newName}'s Number in the DB`;
+          if (error.response.status < 500) {
+            errMsg = error.response.data.error;
+          }
+          handleNotification(errMsg, false);
+        });
       return true;
     } else {
       phoneBook
@@ -49,7 +55,13 @@ function App() {
           setPeople([...people, newPerson]);
           handleNotification(`${newPerson.name} Added to the Phonebook`, true);
         })
-        .catch(() => handleNotification(`Unable to Add ${newName} to the DB`, false));
+        .catch(error => {
+          let errMsg = `Unable to Add ${newName} to the DB`;
+          if (error.response.status < 500) {
+            errMsg = error.response.data.error;
+          }
+          handleNotification(errMsg, false);
+        });
       return true;
     }
   };
